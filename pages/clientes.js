@@ -19,7 +19,7 @@ import {
     ModalContainer,
     ModalHeaderStyled,
     ModalTitle,
-} from './styles/vendedoresStyles';
+} from '../styles/modalStyles';
 import { LinkWrapper } from '../components/LandingPage/Header/headerStyles';
 import { FcBusinessman } from 'react-icons/fc';
 import ReactTooltip from 'react-tooltip';
