@@ -78,9 +78,7 @@ const Customers = () => {
         // `http://localhost:3000/api/clientes`
 
         try {
-            const { data: response } = await axios.get(
-                `${baseUrl}/api/clientes`
-            );
+            const { data: response } = await axios.get(`/api/clientes`);
             setClientes(response.data);
             setPendiente(false);
         } catch (error) {
