@@ -50,6 +50,8 @@ const Customers = () => {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
     console.log(baseUrl);
 
+    // const { data, error } = useSWR('/api/clientes', fetcher);
+
     const { darkMode } = useStateContext();
     const [dialogBox, setDialogBox] = useState(false);
 
@@ -74,12 +76,33 @@ const Customers = () => {
         });
     };
 
+    // const obtenerClientes = async () => {
+    //     // `http://localhost:3000/api/clientes`
+
+    //     try {
+    //         const { data: response } = await axios.get(`/api/clientes`);
+    //         setClientes(response.data);
+    //         setPendiente(false);
+    //     } catch (error) {
+    //         console.log(error);
+
+    //         handleNotifications(
+    //             'danger',
+    //             'Error inesperado!',
+    //             'Contáctese con su Administrador'
+    //         );
+
+    //         // Ir a una página temporaria
+    //         // router.push('/');
+    //     }
+    // };
+
     const obtenerClientes = async () => {
         // `http://localhost:3000/api/clientes`
 
         try {
-            const { data: response } = await axios.get(`/api/clientes`);
-            setClientes(response.data);
+            const { data } = await axios.get(`/api/customers`);
+            setClientes(data);
             setPendiente(false);
         } catch (error) {
             console.log(error);
@@ -343,6 +366,10 @@ const Customers = () => {
         );
     };
 
+    // if (!data) return <div>Loading...</div>;
+    //  else {
+    //     console.log(data.data);
+    //     setClientes(data);
     return (
         <>
             <Layout>
@@ -372,7 +399,10 @@ const Customers = () => {
                             }}
                         >
                             <LinkWrapper
-                                style={{ position: 'relative', width: '80px' }}
+                                style={{
+                                    position: 'relative',
+                                    width: '80px',
+                                }}
                                 data-tip="Nuevo Cliente"
                                 onClick={() =>
                                     abrirEditarModal(modeloCliente, true)
