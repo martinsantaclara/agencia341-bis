@@ -1,98 +1,66 @@
-import { Cliente } from '../../../models/clientes';
+import { PrismaClient } from '@prisma/client';
 import handleError from '../../../utils/handleErrors';
+const prisma = new PrismaClient();
 
-const clientes = async (req, res) => {
+const handler = async (req, res) => {
     if (req.method === 'GET') {
-        //Declaraciones ejecutadas cuando el resultado de expresión coincide con el valor1
         try {
-            const clientes = await Cliente.findAll({
-                // include: {
-                //     model: Maquina,
-                //     attributes: ['NroMaquina', 'Descripcion'],
-                // },
-                order: [['id', 'ASC']],
-            });
-            res.status(200).json({
-                data: clientes,
-            });
+            const allClientes = await prisma.cliente.findMany();
+            res.status(200).json(allClientes);
         } catch (error) {
             handleError(res, error);
         }
     } else if (req.method === 'POST') {
-        //Declaraciones ejecutadas cuando el resultado de expresión coincide con el valor2
+        const { id, nombre, maximo3, entero, nonulo, positivo } = req.body;
         try {
-            const { id, nombre, maximo3, entero, nonulo, positivo } = req.body;
-            let nuevoCliente = await Cliente.create(
-                {
-                    id,
-                    nombre,
-                    maximo3,
-                    entero,
-                    nonulo,
-                    positivo,
+            const cliente = await prisma.cliente.create({
+                data: {
+                    id: parseInt(id),
+                    nombre: nombre,
+                    maximo3: maximo3,
+                    entero: parseInt(entero),
+                    nonulo: nonulo,
+                    positivo: parseInt(positivo),
                 },
-                {
-                    fields: [
-                        'id',
-                        'nombre',
-                        'maximo3',
-                        'entero',
-                        'nonulo',
-                        'positivo',
-                    ],
-                }
-            );
-            if (nuevoCliente) {
-                return res.status(201).send({
-                    type: 'success',
-                    title: 'Nuevo Cliente',
-                    message: 'Cliente creado exitosamente!!!',
-                });
-            }
+            });
+            // if (cliente) {
+            //     console.log('cliente creado!!!');
+            res.status(201).send({
+                type: 'success',
+                title: 'Nuevo Cliente',
+                message: 'Cliente creado exitosamente!!!',
+            });
+            // }
+            // res.status(201).json(cliente)
         } catch (error) {
             handleError(res, error);
         }
     } else if (req.method === 'PUT') {
         const { id, nombre, maximo3, entero, nonulo, positivo } = req.body;
         try {
-            const updatedRows = await Cliente.update(
-                {
-                    id,
-                    nombre,
-                    maximo3,
-                    entero,
-                    nonulo,
-                    positivo,
+            const updateCliente = await prisma.cliente.update({
+                where: {
+                    id: parseInt(id),
                 },
-                {
-                    where: { id },
-                }
-            );
-            return res.status(200).send({
+                data: {
+                    nombre: nombre,
+                    maximo3: maximo3,
+                    entero: parseInt(entero),
+                    nonulo: nonulo,
+                    positivo: parseInt(positivo),
+                },
+            });
+            res.status(200).send({
                 type: 'success',
                 title: 'Actualización de Cliente',
                 message: 'Cliente actualizado exitosamente!!!',
             });
         } catch (error) {
+            // console.log(error);
+            // console.log(error.message);
             handleError(res, error);
-        }
-    } else {
-        const { id } = req.query;
-        try {
-            const deletedRow = await Vendedor.destroy({
-                where: { id },
-            });
-            res.json({
-                message: 'Vendedor deleted successfully',
-                deletedRow: deletedRow,
-            });
-        } catch (error) {
-            res.status(500).json({
-                error: error,
-                message: 'Algo ha salido mal!!!',
-            });
         }
     }
 };
 
-export default clientes;
+export default handler;

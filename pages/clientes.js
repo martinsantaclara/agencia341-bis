@@ -76,32 +76,9 @@ const Customers = () => {
         });
     };
 
-    // const obtenerClientes = async () => {
-    //     // `http://localhost:3000/api/clientes`
-
-    //     try {
-    //         const { data: response } = await axios.get(`/api/clientes`);
-    //         setClientes(response.data);
-    //         setPendiente(false);
-    //     } catch (error) {
-    //         console.log(error);
-
-    //         handleNotifications(
-    //             'danger',
-    //             'Error inesperado!',
-    //             'Contáctese con su Administrador'
-    //         );
-
-    //         // Ir a una página temporaria
-    //         // router.push('/');
-    //     }
-    // };
-
     const obtenerClientes = async () => {
-        // `http://localhost:3000/api/clientes`
-
         try {
-            const { data } = await axios.get(`/api/customers`);
+            const { data } = await axios.get(`/api/clientes`);
             setClientes(data);
             setPendiente(false);
         } catch (error) {
@@ -110,7 +87,7 @@ const Customers = () => {
             handleNotifications(
                 'danger',
                 'Error inesperado!',
-                'Contáctese con su Administrador'
+                'Contáctese con su Administrador!!!'
             );
 
             // Ir a una página temporaria
@@ -251,7 +228,7 @@ const Customers = () => {
                     handleNotifications(
                         'danger',
                         'Error inesperado!',
-                        'Contáctese con su Administrador'
+                        'Contáctese con su Administrador!!!'
                     );
                     setTimeout(() => {
                         setDialogBox(false);
@@ -303,12 +280,9 @@ const Customers = () => {
 
         if (nuevo) {
             // 'http://localhost:3000/api/clientes',
+            //${baseUrl}
 
-            const { data } = await axios.post(
-                `${baseUrl}/api/clientes`,
-                body,
-                header
-            );
+            const { data } = await axios.post(`/api/clientes`, body, header);
             return data;
         } else {
             // 'http://localhost:3000/api/clientes',
